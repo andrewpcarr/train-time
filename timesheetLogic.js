@@ -14,26 +14,26 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-// 2. Button for adding Employees
-$("#add-employee-btn").on("click", function(event) {
+// 2. Button for adding trains
+$("#add-train-btn").on("click", function(event) {
   event.preventDefault();
 
   // Grabs user input
-  var empName = $("#employee-name-input").val().trim();
-  var empRole = $("#role-input").val().trim();
-  var empStart = moment($("#start-input").val().trim(), "DD/MM/YY").format("X");
-  var empRate = $("#rate-input").val().trim();
+  var trainName = $("#train-name-input").val().trim();
+  var destination = $("#destination-input").val().trim();
+  var trainTime = moment($("#time-input").val().trim(), "DD/MM/YY").format("X");
+  var freq = $("#freq-input").val().trim();
 
-  // Creates local "temporary" object for holding employee data
-  var newEmp = {
-    name: empName,
-    role: empRole,
-    start: empStart,
-    rate: empRate
+  // Creates local "temporary" object for holding train data
+  var newTrain = {
+    name: trainName,
+    destination: destination,
+    arrival: trainTime,
+    frequency: freq
   };
 
-  // Uploads employee data to the database
-  database.ref().push(newEmp);
+  // Uploads train data to the database
+  database.ref().push(newTrain);
 
   // Logs everything to console
   console.log(newEmp.name);
@@ -42,19 +42,19 @@ $("#add-employee-btn").on("click", function(event) {
   console.log(newEmp.rate);
 
   // Alert
-  alert("Employee successfully added");
+  alert("Train successfully added");
 
   // Clears all of the text-boxes
-  $("#employee-name-input").val("");
-  $("#role-input").val("");
-  $("#start-input").val("");
-  $("#rate-input").val("");
+  $("#train-name-input").val("");
+  $("#destination-input").val("");
+  $("#time-input").val("");
+  $("#freq-input").val("");
 
   // Prevents moving to new page
   return false;
 });
 
-// 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+// 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
   console.log(childSnapshot.val());
@@ -65,26 +65,25 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   var empStart = childSnapshot.val().start;
   var empRate = childSnapshot.val().rate;
 
-  // Employee Info
+  // train Info
   console.log(empName);
   console.log(empRole);
   console.log(empStart);
   console.log(empRate);
 
-  // Prettify the employee start
+  // Prettify the train time
   var empStartPretty = moment.unix(empStart).format("MM/DD/YY");
 
-  // Calculate the months worked using hardcore math
-  // To calculate the months worked
+  //Calculate train "minutes away"
   var empMonths = moment().diff(moment.unix(empStart, "X"), "months");
   console.log(empMonths);
 
-  // Calculate the total billed rate
+  // Calculate train "minutes away"
   var empBilled = empMonths * empRate;
   console.log(empBilled);
 
   // Add each train's data into the table
-  $("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
+  $("#train-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
   empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
 });
 

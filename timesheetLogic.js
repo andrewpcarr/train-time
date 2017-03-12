@@ -2,11 +2,11 @@
 
 // 1. Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDghk0o6Xs5QTD2VBiDLmCUpmdayFk9tho",
-    authDomain: "deployment-f0355.firebaseapp.com",
-    databaseURL: "https://deployment-f0355.firebaseio.com",
-    storageBucket: "",
-    messagingSenderId: "893916741346"
+    apiKey: "AIzaSyD_U8w3kwUXqXLOsPx-wZsh6Wa9ic4L1XA",
+    authDomain: "train-time-74e9a.firebaseapp.com",
+    databaseURL: "https://train-time-74e9a.firebaseio.com",
+    storageBucket: "train-time-74e9a.appspot.com",
+    messagingSenderId: "709705104167"
   };
 
 
@@ -21,7 +21,7 @@ $("#add-train-btn").on("click", function(event) {
   // Grabs user input
   var trainName = $("#train-name-input").val().trim();
   var destination = $("#destination-input").val().trim();
-  var trainTime = moment($("#time-input").val().trim(), "DD/MM/YY").format("X");
+  var trainTime = moment($("#time-input").val().trim(), "HH:mm").format("X");
   var freq = $("#freq-input").val().trim();
 
   // Creates local "temporary" object for holding train data
@@ -36,10 +36,10 @@ $("#add-train-btn").on("click", function(event) {
   database.ref().push(newTrain);
 
   // Logs everything to console
-  console.log(newEmp.name);
-  console.log(newEmp.role);
-  console.log(newEmp.start);
-  console.log(newEmp.rate);
+  console.log(newTrain.name);
+  console.log(newTrain.destination);
+  console.log(newTrain.arrival);
+  console.log(newTrain.frequency);
 
   // Alert
   alert("Train successfully added");
@@ -60,31 +60,31 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   console.log(childSnapshot.val());
 
   // Store everything into a variable.
-  var empName = childSnapshot.val().name;
-  var empRole = childSnapshot.val().role;
-  var empStart = childSnapshot.val().start;
-  var empRate = childSnapshot.val().rate;
+  var trainName = childSnapshot.val().name;
+  var destination = childSnapshot.val().role;
+  var trainTime = childSnapshot.val().start;
+  var freq = childSnapshot.val().rate;
 
   // train Info
-  console.log(empName);
-  console.log(empRole);
-  console.log(empStart);
-  console.log(empRate);
+  console.log(trainName);
+  console.log(destination);
+  console.log(trainTime);
+  console.log(freq);
 
   // Prettify the train time
-  var empStartPretty = moment.unix(empStart).format("MM/DD/YY");
+  //var empStartPretty = moment.unix(empStart).format("MM/DD/YY");
 
   //Calculate train "minutes away"
-  var empMonths = moment().diff(moment.unix(empStart, "X"), "months");
-  console.log(empMonths);
+  //var empMonths = moment().diff(moment.unix(empStart, "X"), "months");
+  //console.log(empMonths);
 
   // Calculate train "minutes away"
-  var empBilled = empMonths * empRate;
-  console.log(empBilled);
+  //var empBilled = empMonths * empRate;
+  //console.log(empBilled);
 
   // Add each train's data into the table
-  $("#train-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
-  empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
+  //$("#train-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
+ // empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
 });
 
 // Example Time Math
